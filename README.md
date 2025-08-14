@@ -5,7 +5,7 @@ A comprehensive fitness application with MediaPipe pose detection for real-time 
 ## 🚀 Features
 
 - **Multi-level Navigation**: Muscle groups → Exercises → Workout interface
-- **Real YouTube Videos**: Each exercise has its own instructional video
+<!-- - **Real YouTube Videos**: Each exercise has its own instructional video -->
 - **MediaPipe Integration**: Real-time pose detection and form analysis
 - **User Authentication**: Login/Register system with SQLite database
 - **Responsive Design**: Modern UI with Bootstrap and custom styling
@@ -45,9 +45,10 @@ A comprehensive fitness application with MediaPipe pose detection for real-time 
 3. **Workout Page**: Watch video on left, use camera on right
 
 ### 2. Video Integration
-- Each exercise has a real YouTube video
-- Videos are embedded with autoplay controls
-- Play, Pause, and Restart functionality
+<!-- - Each exercise has a real YouTube video -->
+<!-- - Videos are embedded with autoplay controls -->
+<!-- - Play, Pause, and Restart functionality -->
+- Each exercise has a GIF showing how to do that workout
 
 ### 3. MediaPipe Pose Detection
 
@@ -59,7 +60,7 @@ A comprehensive fitness application with MediaPipe pose detection for real-time 
 #### ML Model Features
 - **Real-time Pose Detection**: 33 body landmarks
 - **Angle Calculations**: Arm angles for form analysis
-- **Form Feedback**: Visual indicators for good/bad form
+<!-- - **Form Feedback**: Visual indicators for good/bad form -->
 - **Live Analysis**: Continuous monitoring during exercise
 
 #### Pose Analysis Details
@@ -128,7 +129,7 @@ def analyze_pose(self, landmarks, image):
 - `GET /muscle/<muscle_group>`: Show exercises for muscle group
 - `GET /workout/<muscle_group>/<exercise_name>`: Workout interface
 
-## 📊 Exercise Database
+<!-- ## 📊 Exercise Database
 
 ### Chest Exercises
 - **Push-ups**: `https://www.youtube.com/embed/IODxDxX7oi4`
@@ -238,9 +239,9 @@ CMD ["python", "main.py"]
 - [ ] Progress tracking and statistics
 - [ ] Mobile app version
 - [ ] Social features and sharing
-- [ ] AI-powered exercise recommendations
+- [ ] AI-powered exercise recommendations -->
 
-## 🤝 Contributing
+<!-- ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -250,11 +251,11 @@ CMD ["python", "main.py"]
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for details. -->
 
-## 🙏 Acknowledgments
+<!-- ## 🙏 Acknowledgments
 
 - MediaPipe team for pose detection
-- YouTube for exercise videos
+- GIF for exercise 
 - Bootstrap for UI components
-- Flask community for web framework
+- Flask community for web framework -->

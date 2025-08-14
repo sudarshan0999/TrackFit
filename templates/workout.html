@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FormAI | {{ exercise.name }} Workout</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    body {
+      background: url('{{ url_for('static', filename='background.jpg') }}') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+    }
+
+    .navbar-custom {
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      width: 100%;
+      padding: 0 2rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+
+    .navbar-brand img {
+      height: 35px;
+      width: auto;
+      margin-right: 10px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .navbar-brand img:hover {
+      transform: scale(1.1);
+      filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+    }
+
+    /* Add padding to body to account for fixed navbar */
+    body {
+      padding-top: 80px;
+    }
+
+    .workout-container {
+      min-height: calc(100vh - 80px);
+      padding: 1rem 0;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .cards-row {
+      flex: 1;
+      display: flex;
+      gap: 1rem;
+      min-height: 0;
+      overflow: hidden;
+      height: 110vh;
+    }
+
+    .video-section {
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 15px;
+      padding: 1.5rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .camera-section {
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 15px;
+      padding: 1.5rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .video-player {
+      width: 100%;
+      flex: 1;
+      border-radius: 10px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .camera-feed {
+      width: 100%;
+      flex: 1;
+      border-radius: 10px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      position: relative;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .camera-overlay {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 0.9rem;
+    }
+
+    .counter-cards-container {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      height: 160px;
+      overflow: hidden;
+    }
+
+    .counter-card-small {
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .counter-card-small:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .counter-header-small {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-bottom: 0.5rem;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .counter-header-small i {
+      font-size: 1.1rem;
+      color: #00d4aa;
+    }
+
+    .counter-value-small {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #00d4aa;
+      text-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
+    }
+
+    .exercise-info {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .exercise-details {
+      flex: 1;
+    }
+
+    .exercise-name {
+      color: #fff;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .exercise-description {
+      color: #ccc;
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+
+    .back-btn {
+      background: linear-gradient(45deg, #ff6b9d, #c44569);
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: white;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+    }
+
+    .back-btn:hover {
+      background: linear-gradient(45deg, #c44569, #ff6b9d);
+      transform: translateY(-2px);
+      color: white;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
+    }
+
+    .control-btn {
+      background: linear-gradient(45deg, #ff6b9d, #c44569);
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: white;
+      margin: 0.5rem;
+    }
+
+    .control-btn:hover {
+      background: linear-gradient(45deg, #c44569, #ff6b9d);
+      transform: translateY(-2px);
+      color: white;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .status-active {
+      background-color: #28a745;
+      animation: pulse 2s infinite;
+    }
+
+    .status-inactive {
+      background-color: #dc3545;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+         .counter-card {
+       background: rgba(0, 0, 0, 0.8);
+       border-radius: 15px;
+       padding: 1.5rem;
+       text-align: center;
+       height: 200px;
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+       border: 2px solid rgba(255, 255, 255, 0.1);
+       transition: all 0.3s ease;
+     }
+
+     .counter-card:hover {
+       border-color: rgba(255, 255, 255, 0.3);
+       transform: translateY(-2px);
+     }
+
+     .counter-header {
+       display: flex;
+       align-items: center;
+       gap: 0.5rem;
+       margin-bottom: 1rem;
+       color: #fff;
+       font-size: 1rem;
+       font-weight: 600;
+     }
+
+     .counter-header i {
+       font-size: 1.2rem;
+       color: #00d4aa;
+     }
+
+               .counter-value {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #00d4aa;
+        text-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
+      }
+
+    .counter-cards-container {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      height: 120px;
+      overflow: hidden;
+    }
+
+    .counter-card-small {
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .counter-card-small:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .counter-header-small {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-bottom: 0.5rem;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .counter-header-small i {
+      font-size: 1rem;
+      color: #00d4aa;
+    }
+
+    .counter-value-small {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #00d4aa;
+      text-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
+    }
+
+    .login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .login-modal {
+      background: rgba(26, 26, 26, 0.95);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 3rem;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .login-modal h3 {
+      color: #fff;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      background: none;
+      border: none;
+      color: #ccc;
+      font-size: 1.8rem;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transform: scale(1.1);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .login-btn {
+      background: linear-gradient(45deg, #00d4aa, #00b4d8);
+      border: none;
+      border-radius: 12px;
+      padding: 16px 36px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: white;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      flex: 1;
+      max-width: 150px;
+    }
+
+    .login-btn:hover {
+      background: linear-gradient(45deg, #00b4d8, #00d4aa);
+      transform: translateY(-2px);
+      color: white;
+      text-decoration: none;
+      box-shadow: 0 5px 15px rgba(0, 212, 170, 0.3);
+    }
+
+    .register-btn {
+      background: linear-gradient(45deg, #ff6b9d, #c44569);
+      border: none;
+      border-radius: 12px;
+      padding: 16px 36px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: white;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      flex: 1;
+      max-width: 150px;
+    }
+
+    .register-btn:hover {
+      background: linear-gradient(45deg, #c44569, #ff6b9d);
+      transform: translateY(-2px);
+      color: white;
+      text-decoration: none;
+      box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+    }
+
+    .auth-form {
+      display: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .auth-form.show {
+      display: block;
+    }
+
+    .form-control {
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      padding: 16px 20px;
+      margin-bottom: 1.5rem;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-control::placeholder {
+      color: #999;
+    }
+
+    .form-control:focus {
+      border-color: #00d4aa;
+      box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+      outline: none;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .error-message {
+      color: #ff6b6b;
+      background-color: rgba(255, 107, 107, 0.1);
+      border: 1px solid rgba(255, 107, 107, 0.3);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .success-message {
+      color: #51cf66;
+      background-color: rgba(81, 207, 102, 0.1);
+      border: 1px solid rgba(81, 207, 102, 0.3);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .user-dropdown {
+      position: relative;
+      display: inline-block;
+      z-index: 10000;
+    }
+
+    .user-dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(15px);
+      min-width: 220px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      z-index: 9999;
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-top: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transform: translateY(0);
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .user-dropdown-content.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .user-dropdown-content p {
+      color: #fff;
+      margin: 0;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .user-dropdown-content a {
+      color: #ff6b9d;
+      text-decoration: none;
+      display: block;
+      padding: 0.75rem 0;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .user-dropdown-content a:hover {
+      color: #c44569;
+      transform: translateX(5px);
+    }
+     @media (max-width: 768px) {
+       .workout-container {
+         padding: 1rem 0;
+       }
+       
+       .video-section, .camera-section {
+         margin-bottom: 1rem;
+       }
+       
+       .counter-card {
+         height: 150px;
+         margin-bottom: 1rem;
+       }
+       
+       .counter-value {
+         font-size: 2rem;
+       }
+     }
+
+    /* Custom scrollbar styles */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+
+    /* Firefox scrollbar */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    }
+
+    /* Full screen container */
+    .full-screen-container {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .scroll-indicator {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .scroll-indicator:hover {
+      background: rgba(0, 0, 0, 0.9);
+      transform: scale(1.1);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .scroll-indicator i {
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-5px);
+      }
+      60% {
+        transform: translateY(-3px);
+      }
+    }
+  </style>
+</head>
+<body style="background: url('{{ url_for('static', filename='background.jpg') }}') no-repeat center center fixed; background-size: cover;">
+
+  <!-- Decorative shapes -->
+  <div class="decorative-shape shape-left"></div>
+  <div class="decorative-shape shape-right"></div>
+  
+  <!-- Full Screen Container -->
+  <div class="full-screen-container">
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+      <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="TrackFit Logo">
+        <strong>TrackFit</strong>
+      </a>
+
+      <div class="collapse navbar-collapse justify-content-center">
+        <ul class="navbar-nav">
+          <!-- <li class="nav-item px-3">
+            <a class="nav-link text-white" href="#">FITNESS</a>
+          </li>
+          <li class="nav-item px-3">
+            <a class="nav-link text-white" href="#">STORE</a>
+          </li> -->
+        </ul>
+      </div>
+
+      <div class="d-flex align-items-center">
+        <span class="text-white me-2" id="user-location">Locating...</span>
+        <i class="fas fa-map-marker-alt text-white me-3"></i>
+        <!-- <button class="btn btn-outline-light btn-sm me-3">GET APP</button> -->
+        
+        {% if session.username %}
+          <!-- Logged in user dropdown -->
+          <div class="user-dropdown me-3">
+            <a href="#" class="text-white user-icon" onclick="toggleUserDropdown()">
+              <i class="fas fa-user"></i>
+            </a>
+            <div class="user-dropdown-content" id="userDropdown">
+              <p>Welcome, {{ session.username }}!</p>
+              <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+          </div>
+        {% else %}
+          <!-- Login button for non-logged in users -->
+          <a href="#" class="text-white me-3 user-icon" onclick="showLoginModal()">
+            <i class="fas fa-user"></i>
+          </a>
+        {% endif %}
+        
+        <!-- <a href="#" class="text-white"> -->
+          <!-- <i class="fas fa-shopping-cart"></i> -->
+        <!-- </a> -->
+      </div>
+    </nav>
+
+    <!-- Content Area -->
+    <div class="content-area">
+      <!-- Workout Content -->
+      <div class="container workout-container">
+          <!-- Exercise Info -->
+          <div class="exercise-info">
+            <div class="exercise-details">
+              <h2 class="exercise-name">{{ exercise.name }}</h2>
+              <p class="exercise-description">{{ exercise.description }}</p>
+            </div>
+            <a href="{{ url_for('muscle_group', muscle_group=muscle_group) }}" class="back-btn">
+              <i class="fas fa-arrow-left me-2"></i>Back to {{ muscle_group.title() }} Exercises
+            </a>
+          </div>
+
+          <!-- Main Content Area -->
+          <div class="main-content">
+            <div class="cards-row">
+              <!-- Video Section (2/5 of screen) -->
+              <div class="col-lg-5">
+                <div class="video-section">
+                  <div class="video-player" id="videoPlayer">
+                    <img 
+                      src="{{ url_for('static', filename=exercise.video.replace('static/', '')) }}" 
+                      alt="{{ exercise.name }}" 
+                      style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                  </div>
+                  
+                  <!-- Counter Cards Section - positioned at bottom of GIF card -->
+                  <div class="counter-cards-container">
+                    <!-- Rep Counter Card -->
+                    <div class="counter-card-small">
+                      <div class="counter-header-small">
+                        <i class="fas fa-dumbbell"></i>
+                        <span>Rep Count</span>
+                      </div>
+                      <div class="counter-value-small" id="repCounter">0</div>
+                    </div>
+                    
+                    <!-- Position Card -->
+                    <div class="counter-card-small">
+                      <div class="counter-header-small">
+                        <i class="fas fa-user"></i>
+                        <span>Position</span>
+                      </div>
+                      <div class="counter-value-small" id="positionDisplay">None</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Camera Section (3/5 of screen) -->
+              <div class="col-lg-7">
+                <div class="camera-section">
+                  <div class="camera-feed" id="cameraFeed">
+                    <img id="cameraImage" src="" alt="Camera Feed" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                    <div class="text-center" id="cameraPlaceholder" style="height: 100%;">
+                      <i class="fas fa-camera fa-3x mb-3"></i>
+                      <p>Camera feed will appear here</p>
+                      <p class="text-muted">ML model will analyze your form</p>
+                    </div>
+                    <div class="camera-overlay">
+                      <i class="fas fa-circle text-danger"></i> Camera Off
+                    </div>
+                  </div>
+                  
+                  <div class="text-center mt-3">
+                    {% if session.username %}
+                      <button class="control-btn" onclick="startCamera()" id="startCameraBtn">
+                        <i class="fas fa-play me-2"></i>Start Camera
+                      </button>
+                      <button class="control-btn" onclick="stopCamera()" id="stopCameraBtn" style="display: none;">
+                        <i class="fas fa-stop me-2"></i>Stop Camera
+                      </button>
+                    {% else %}
+                      <button class="control-btn" onclick="showLoginModal()" id="loginRequiredBtn">
+                        <i class="fas fa-lock me-2"></i>Login Required
+                      </button>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator" onclick="scrollToBottom()" id="scrollIndicator">
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  </div>
+
+  <!-- Login Overlay -->
+  <div class="login-overlay" id="loginOverlay" style="display: none;">
+    <div class="login-modal">
+      <button class="close-btn" onclick="hideLoginModal()">&times;</button>
+      <h3>Welcome to TrackFit</h3>
+      
+      <div id="loginForm" class="auth-form show">
+        <form method="post" action="{{ url_for('login') }}">
+          <input type="hidden" name="redirect_url" value="{{ request.url }}">
+          <input type="text" name="username" class="form-control" placeholder="Username" required>
+          <input type="password" name="password" class="form-control" placeholder="Password" required>
+          <div class="button-group">
+            <button type="submit" class="login-btn">Login</button>
+            <button type="button" class="register-btn" onclick="showRegisterForm()">Register</button>
+          </div>
+        </form>
+      </div>
+      
+      <div id="registerForm" class="auth-form">
+        <form method="post" action="{{ url_for('register') }}">
+          <input type="hidden" name="redirect_url" value="{{ request.url }}">
+          <input type="text" name="username" class="form-control" placeholder="Username" required>
+          <input type="password" name="password" class="form-control" placeholder="Password" required>
+          <div class="button-group">
+            <button type="submit" class="register-btn">Register</button>
+            <button type="button" class="login-btn" onclick="showLoginForm()">Login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let cameraActive = false;
+    let mlActive = false;
+
+    // Authentication functions
+    function showLoginModal() {
+      document.getElementById('loginOverlay').style.display = 'flex';
+    }
+
+    function hideLoginModal() {
+      document.getElementById('loginOverlay').style.display = 'none';
+    }
+
+    function showLoginForm() {
+      document.getElementById('loginForm').classList.add('show');
+      document.getElementById('registerForm').classList.remove('show');
+    }
+
+    function showRegisterForm() {
+      document.getElementById('registerForm').classList.add('show');
+      document.getElementById('loginForm').classList.remove('show');
+    }
+
+    function toggleUserDropdown() {
+      const dropdown = document.getElementById('userDropdown');
+      if (dropdown) {
+        dropdown.classList.toggle('show');
+      }
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!event.target.matches('.user-icon') && !event.target.closest('.user-dropdown')) {
+        const dropdowns = document.getElementsByClassName('user-dropdown-content');
+        for (let dropdown of dropdowns) {
+          if (dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+          }
+        }
+      }
+    });
+
+    // Start camera function
+    function startCamera() {
+      // Check if user is logged in
+      {% if not session.username %}
+        showLoginModal();
+        return;
+      {% endif %}
+
+      const cameraImage = document.getElementById('cameraImage');
+      const cameraPlaceholder = document.getElementById('cameraPlaceholder');
+      const overlay = document.querySelector('.camera-overlay');
+      const startBtn = document.getElementById('startCameraBtn');
+      const stopBtn = document.getElementById('stopCameraBtn');
+      
+      // Disable start button to prevent multiple clicks
+      startBtn.disabled = true;
+      startBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Starting...';
+      
+      cameraActive = true;
+      
+      fetch('/start_camera')
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            // Add a small delay before starting video feed
+            setTimeout(() => {
+              cameraImage.src = '/video_feed?exercise={{ exercise.name }}';
+              cameraImage.style.display = 'block';
+              cameraPlaceholder.style.display = 'none';
+              overlay.innerHTML = '<i class="fas fa-circle text-success"></i> Camera On';
+              startBtn.style.display = 'none';
+              stopBtn.style.display = 'inline-block';
+            }, 500);
+          } else {
+            cameraActive = false;
+            startBtn.disabled = false;
+            startBtn.innerHTML = '<i class="fas fa-play me-2"></i>Start Camera';
+            alert('Failed to start camera: ' + data.message);
+          }
+        })
+        .catch(error => {
+          cameraActive = false;
+          startBtn.disabled = false;
+          startBtn.innerHTML = '<i class="fas fa-play me-2"></i>Start Camera';
+          console.error('Error starting camera:', error);
+          alert('Error starting camera. Please check if your camera is available.');
+        });
+    }
+
+    // Stop camera function
+    function stopCamera() {
+      const cameraImage = document.getElementById('cameraImage');
+      const cameraPlaceholder = document.getElementById('cameraPlaceholder');
+      const overlay = document.querySelector('.camera-overlay');
+      const startBtn = document.getElementById('startCameraBtn');
+      const stopBtn = document.getElementById('stopCameraBtn');
+      
+      // Disable stop button and show stopping state
+      stopBtn.disabled = true;
+      stopBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Stopping...';
+      
+      cameraActive = false;
+      mlActive = false;
+      
+      // Clear the video source immediately
+      cameraImage.src = '';
+      cameraImage.style.display = 'none';
+      cameraPlaceholder.style.display = 'block';
+      overlay.innerHTML = '<i class="fas fa-circle text-danger"></i> Camera Off';
+      
+      fetch('/stop_camera')
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            // Show start button and hide stop button
+            startBtn.style.display = 'inline-block';
+            stopBtn.style.display = 'none';
+            stopBtn.disabled = false;
+            stopBtn.innerHTML = '<i class="fas fa-stop me-2"></i>Stop Camera';
+          }
+        })
+        .catch(error => {
+          console.error('Error stopping camera:', error);
+          stopBtn.disabled = false;
+          stopBtn.innerHTML = '<i class="fas fa-stop me-2"></i>Stop Camera';
+        });
+    }
+
+    // Update counter data periodically
+    function updateCounterData() {
+      if (cameraActive) {
+        fetch('/get_counter_data?exercise={{ exercise.name }}')
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 'success') {
+              document.getElementById('repCounter').textContent = data.counter;
+              document.getElementById('positionDisplay').textContent = data.position;
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching counter data:', error);
+          });
+      }
+    }
+
+    // Update counter data every 500ms when camera is active
+    setInterval(updateCounterData, 500);
+
+    // Location service
+    document.addEventListener('DOMContentLoaded', function() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+              .then(response => response.json())
+              .then(data => {
+                let city = data.address.city || data.address.town || data.address.village || data.address.state || "Your Location";
+                document.getElementById('user-location').textContent = city;
+              })
+              .catch(() => {
+                document.getElementById('user-location').textContent = "Location Unavailable";
+              });
+          },
+          function() {
+            document.getElementById('user-location').textContent = "Location Blocked";
+          }
+        );
+      } else {
+        document.getElementById('user-location').textContent = "Not Supported";
+      }
+
+      // Hide scroll indicator initially
+      const scrollIndicator = document.getElementById('scrollIndicator');
+      scrollIndicator.style.display = 'none';
+    });
+
+    // Scroll to bottom function
+    function scrollToBottom() {
+      const contentArea = document.querySelector('.content-area');
+      contentArea.scrollTo({
+        top: contentArea.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+
+    // Show scroll indicator when content overflows
+    function checkScrollIndicator() {
+      const contentArea = document.querySelector('.content-area');
+      const scrollIndicator = document.getElementById('scrollIndicator');
+      
+      if (contentArea.scrollHeight > contentArea.clientHeight) {
+        scrollIndicator.style.display = 'flex';
+      } else {
+        scrollIndicator.style.display = 'none';
+      }
+    }
+
+    // Check for overflow on window resize
+    window.addEventListener('resize', checkScrollIndicator);
+    
+    // Initial check
+    setTimeout(checkScrollIndicator, 100);
+  </script>
+</body>
+</html>

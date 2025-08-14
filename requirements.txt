@@ -1,0 +1,11 @@
+Flask==2.3.3
+Flask-SQLAlchemy==3.0.5
+Werkzeug==2.3.7
+opencv-python==4.8.1.78
+mediapipe==0.10.7
+numpy==1.24.3
+
+
+
+
+# the user button must show the same functionality in any of the page like when i logged in it must show logout and welcome message no matter wherever i am on my page and aslo make the back to muscle group button on the right corner of the screen not in center make it to right side of the muscle group exercise name

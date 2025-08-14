@@ -29,6 +29,8 @@
       background-color: rgba(0, 0, 0, 0.6);
       margin: 0;
       padding: 0;
+      padding-top: 80px;
+      overflow-y: auto;
     }
 
     .navbar-custom {
@@ -36,6 +38,10 @@
       backdrop-filter: blur(10px);
       width: 100%;
       padding: 0 2rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
     }
 
     .navbar {
@@ -97,7 +103,7 @@
     }
 
     .modal-content {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(26, 26, 26, 0.92);
       backdrop-filter: blur(10px);
       border: none;
       border-radius: 15px;
@@ -106,11 +112,12 @@
     .modal-header {
       border-bottom: none;
       padding-bottom: 0;
+  
     }
 
     .modal-title {
       font-weight: bold;
-      color: #333;
+      color: #ece9e9;
     }
 
     .form-control {
@@ -163,6 +170,62 @@
       transform: scale(1.1);
     }
 
+    .user-dropdown {
+      position: relative;
+      display: inline-block;
+      z-index: 10000;
+    }
+
+    .user-dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(15px);
+      min-width: 220px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      z-index: 9999;
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-top: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transform: translateY(0);
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .user-dropdown-content.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .user-dropdown-content p {
+      color: #fff;
+      margin: 0;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .user-dropdown-content a {
+      color: #ff6b9d;
+      text-decoration: none;
+      display: block;
+      padding: 0.75rem 0;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .user-dropdown-content a:hover {
+      color: #c44569;
+      transform: translateX(5px);
+    }
+
+
+
     .error-message {
       color: #dc3545;
       background-color: #f8d7da;
@@ -184,16 +247,86 @@
       font-size: 14px;
       text-align: center;
     }
+
+    .muscle-section-title {
+      color: #fff;
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 2.5rem;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.25);
+    }
+    .muscle-card {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(30, 30, 30, 0.92);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+      position: relative;
+      min-height: 270px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .muscle-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.28);
+    }
+    .muscle-img {
+      height: 300px;
+      object-fit: cover;
+      border-top-left-radius: 18px;
+      border-top-right-radius: 18px;
+      width: 100%;
+      display: block;
+      position: relative;
+    }
+    .muscle-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 300px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.32) 60%, rgba(30,30,30,0.85) 100%);
+      border-top-left-radius: 18px;
+      border-top-right-radius: 18px;
+      z-index: 2;
+    }
+
+
+
+    .muscle-card .card-body {
+      z-index: 3;
+      position: relative;
+      padding: 1.2rem 1rem 1.4rem 1rem;
+    }
+    .muscle-card .card-title {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      margin-bottom: 0;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+    @media (max-width: 991px) {
+      .muscle-img, .muscle-overlay { height: 180px; }
+      .muscle-card { min-height: 300px; }
+    }
+    @media (max-width: 767px) {
+      .muscle-img, .muscle-overlay { height: 150px; }
+      .muscle-card { min-height: 240px; }
+    }
+
+
+    
+
+
+
+
+
   </style>
 </head>
-<body>
+<body style="background: url('{{ url_for('static', filename='background.jpg') }}') no-repeat center center fixed; background-size: cover;">
 
-  <!-- Background video -->
-  <video autoplay muted loop class="bg-video">
-    <source src="{{ url_for('static', filename='video1.mp4') }}" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-  
   <!-- Decorative shapes -->
   <div class="decorative-shape shape-left"></div>
   <div class="decorative-shape shape-right"></div>
@@ -201,40 +334,141 @@
   <!-- Navigation bar -->
   <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
     <a class="navbar-brand d-flex align-items-center" href="#">
-      <img src="{{ url_for('static', filename='logo.png') }}" alt="FormAI Logo">
-      <strong>FormAI</strong>
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="TrackFit Logo">
+      <strong>TrackFit</strong>
     </a>
 
     <div class="collapse navbar-collapse justify-content-center">
       <ul class="navbar-nav">
-        <li class="nav-item px-3">
+        <!-- <li class="nav-item px-3">
           <a class="nav-link text-white" href="#">FITNESS</a>
         </li>
         <li class="nav-item px-3">
           <a class="nav-link text-white" href="#">STORE</a>
-        </li>
+        </li> -->
       </ul>
     </div>
 
     <div class="d-flex align-items-center">
       <span class="text-white me-2" id="user-location">Locating...</span>
       <i class="fas fa-map-marker-alt text-white me-3"></i>
-      <button class="btn btn-outline-light btn-sm me-3">GET APP</button>
-      <a href="#" class="text-white me-3 user-icon" data-bs-toggle="modal" data-bs-target="#loginModal">
-        <i class="fas fa-user"></i>
-      </a>
-      <a href="#" class="text-white">
+      <!-- <button class="btn btn-outline-light btn-sm me-3">GET APP</button> -->
+      
+      {% if session.username %}
+        <!-- Logged in user dropdown -->
+        <div class="user-dropdown me-3">
+          <a href="#" class="text-white user-icon" onclick="toggleUserDropdown()">
+            <i class="fas fa-user"></i>
+          </a>
+          <div class="user-dropdown-content" id="userDropdown">
+            <p>Welcome, {{ session.username }}!</p>
+            <a href="{{ url_for('logout') }}">Logout</a>
+          </div>
+        </div>
+      {% else %}
+        <!-- Login button for non-logged in users -->
+        <a href="#" class="text-white me-3 user-icon" onclick="showLoginModal()">
+          <i class="fas fa-user"></i>
+        </a>
+      {% endif %}
+      
+      <!-- <a href="#" class="text-white">
         <i class="fas fa-shopping-cart"></i>
-      </a>
+      </a> -->
     </div>
   </nav>
+
+  <!-- Muscle Group Cards Section -->
+  <div class="container py-5">
+    <div class="muscle-section-title">Explore Muscle Groups</div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-12 col-sm-6 col-lg-4">
+        <a href="{{ url_for('muscle_group', muscle_group='chest') }}" class="text-decoration-none">
+          <div class="muscle-card card h-100 border-0">
+            <div class="position-relative">
+              <img src="{{ url_for('static', filename='chest.jpg') }}" class="card-img-top muscle-img" alt="Chest">
+              <div class="muscle-overlay"></div>
+            </div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Chest</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-4">
+        <a href="{{ url_for('muscle_group', muscle_group='shoulder') }}" class="text-decoration-none">
+          <div class="muscle-card card h-100 border-0">
+            <div class="position-relative">
+              <img src="{{ url_for('static', filename='shoulder.jpg') }}" class="card-img-top muscle-img" alt="Shoulder">
+              <div class="muscle-overlay"></div>
+            </div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Shoulder</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-4">
+        <a href="{{ url_for('muscle_group', muscle_group='back') }}" class="text-decoration-none">
+          <div class="muscle-card card h-100 border-0">
+            <div class="position-relative">
+              <img src="{{ url_for('static', filename='back.jpg') }}" class="card-img-top muscle-img" alt="Back">
+              <div class="muscle-overlay"></div>
+            </div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Back</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-4">
+        <a href="{{ url_for('muscle_group', muscle_group='bicep') }}" class="text-decoration-none">
+          <div class="muscle-card card h-100 border-0">
+            <div class="position-relative">
+              <img src="{{ url_for('static', filename='bicep.jpg') }}" class="card-img-top muscle-img" alt="Biceps">
+              <div class="muscle-overlay"></div>
+            </div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Biceps</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-4">
+        <a href="{{ url_for('muscle_group', muscle_group='tricep') }}" class="text-decoration-none">
+          <div class="muscle-card card h-100 border-0">
+            <div class="position-relative">
+              <img src="{{ url_for('static', filename='tricep.jpg') }}" class="card-img-top muscle-img" alt="Triceps">
+              <div class="muscle-overlay"></div>
+            </div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Triceps</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-4">
+        <a href="{{ url_for('muscle_group', muscle_group='legs') }}" class="text-decoration-none">
+          <div class="muscle-card card h-100 border-0">
+            <div class="position-relative">
+              <img src="{{ url_for('static', filename='legs.jpg') }}" class="card-img-top muscle-img" alt="Legs">
+              <div class="muscle-overlay"></div>
+            </div>
+            <div class="card-body text-center">
+              <h5 class="card-title">Legs</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
 
   <!-- Login/Register Modal -->
   <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
                  <div class="modal-header text-center">
-           <h5 class="modal-title w-100" id="loginModalLabel">Welcome to FormAI</h5>
+           <h5 class="modal-title w-100" id="loginModalLabel">Welcome to TrackFit</h5>
            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
          </div>
                  <div class="modal-body">
@@ -285,6 +519,30 @@
       form.method = "post";
       form.submit();
     }
+
+    function showLoginModal() {
+      const modal = new bootstrap.Modal(document.getElementById('loginModal'));
+      modal.show();
+    }
+
+    function toggleUserDropdown() {
+      const dropdown = document.getElementById('userDropdown');
+      if (dropdown) {
+        dropdown.classList.toggle('show');
+      }
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!event.target.matches('.user-icon') && !event.target.closest('.user-dropdown')) {
+        const dropdowns = document.getElementsByClassName('user-dropdown-content');
+        for (let dropdown of dropdowns) {
+          if (dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+          }
+        }
+      }
+    });
 
     // Auto-show modal on page load if there are error or success messages
     document.addEventListener('DOMContentLoaded', function() {

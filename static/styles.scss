@@ -1,0 +1,278 @@
+// $primary-color: blue;
+// $primary-hover-color: #0056b3;
+// $secondary-color : #28a745;
+// $secondary-hover-color: #218838;
+// $background-color : #97e955;
+// $container-bg-color: #ffffff;
+// $text-color: #333;
+// $subtext-color: #666;
+// // $scall:10px;
+
+
+// // Styling
+// body{
+//     background-color: $background-color ;
+//     font-family: 'Franklin Gothic Medium','Arial Narrow',Arial,sans-serif;
+//     color: $text-color;
+//     display: flex;
+//     flex-direction : column;
+//     align-items:center;
+//     height: 100vh;
+//     margin: 0;
+//     text-align: center;
+
+// }
+
+
+// header{
+//    width : 100%;
+//    background-color: $container-bg-color; 
+//    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+//    padding : 20px 0;
+
+//    h1{
+//     margin: 0;
+//     font-size : 2.5rem;
+//     color : $text-color;
+//    }
+// }
+
+// main{
+//     display:flex;
+//     justify-content:center;
+//     align-items:content;
+//     flex:1;
+//     width:100%;
+// }
+
+// .container{
+//     background-color: $container-bg-color;
+//     border-radius:8px;
+//     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+//     padding:30px;
+//     max-width:400px;
+//     width:100%;
+//     margin:50px auto;
+
+
+//     h1{
+//         font-size:2.5rem;
+//         color:$text-color;
+//         margin-bottom : 1.5rem;
+
+//     }
+//     p{
+//         font-size: 18px;
+//         color: $subtext-color;
+//         margin-bottom: 20px;
+//     }
+
+//     .input-field{
+//         width:100%;
+//         padding:10px; 
+//         margin:10px 0;
+//         border: 1px solid #333;
+//         border-radius: 4px;
+//         font-size: 1.5rem;
+//         box-sizing: border-box;
+
+
+//         &:focus{
+//             border-color: $primary-color;
+//             outline:none;
+//         }
+//     }
+
+//     .btn{
+//         width:100%;
+//         padding:10px;
+//         margin:10px 0;
+//         border: none;
+//         border-radius: 4px;
+//         font-size: 1rem;
+//         cursor: pointer;
+//         transition: background-color 0.3s ease;
+
+
+//         &.btn-login{
+//             background-color: $primary-color;
+//             color: #fff;
+
+//             &:hover{
+//                 background-color: $secondary-hover-color;
+
+//             }
+//         }
+
+//         &.btn-register{
+//             background-color: $primary-color;
+//             color: #fff;
+
+//             &:hover{
+//                 background-color: $secondary-hover-color;
+
+//             }
+//         }
+
+//         &.btn-logout{
+//             background-color: $primary-color;
+//             color: #fff;
+
+//             &:hover{
+//                 background-color: $primary-hover-color;
+
+//             }
+//         }
+
+
+//     }
+
+// }
+
+
+
+
+
+
+$primary-color: #007bff;
+$primary-hover-color: #0056b3;
+$secondary-color: #28a745;
+$secondary-hover-color: #218838;
+$background-color: #f4f8fb;
+$container-bg-color: #ffffff;
+$text-color: #333;
+$subtext-color: #666;
+$border-radius: 10px;
+$shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+$transition-speed: 0.3s;
+
+// General Styling
+body {
+    background-color: $background-color;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: $text-color;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+// Header Section
+header {
+    width: 100%;
+    background-color: $container-bg-color;
+    box-shadow: $shadow;
+    padding: 20px 0;
+
+    h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        color: $primary-color;
+        letter-spacing: 1px;
+        transition: color $transition-speed ease;
+
+        &:hover {
+            color: $primary-hover-color;
+        }
+    }
+}
+
+// Main Content Wrapper
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    width: 100%;
+    padding: 20px;
+}
+
+// Container Card
+.container {
+    background-color: $container-bg-color;
+    border-radius: $border-radius;
+    box-shadow: $shadow;
+    padding: 40px;
+    max-width: 450px;
+    width: 100%;
+    margin: 30px auto;
+    animation: fadeIn 0.5s ease-in;
+
+    h1 {
+        font-size: 2.2rem;
+        color: $text-color;
+        margin-bottom: 1.2rem;
+    }
+
+    p {
+        font-size: 1rem;
+        color: $subtext-color;
+        margin-bottom: 20px;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 12px;
+        margin: 12px 0;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1rem;
+        box-sizing: border-box;
+        transition: border-color $transition-speed ease;
+
+        &:focus {
+            border-color: $primary-color;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color $transition-speed ease, transform 0.2s;
+
+        &:hover {
+            transform: translateY(-2px);
+        }
+
+        &.btn-login,
+        &.btn-register,
+        &.btn-logout {
+            background-color: $primary-color;
+            color: #fff;
+
+            &:hover {
+                background-color: $primary-hover-color;
+            }
+        }
+
+        &.btn-register {
+            background-color: $secondary-color;
+
+            &:hover {
+                background-color: $secondary-hover-color;
+            }
+        }
+    }
+}
+
+// Subtle Fade-In Animation
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

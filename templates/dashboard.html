@@ -1,0 +1,303 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="'container">
+      <h1>Welcome,{{username}} ! </h1> 
+      <p>Welcome to your Dashboard </p>
+      <a href="{{url_for('logout')}}" class="btn btn-logout ">Logout</a> 
+    </div>
+</body>
+</html> -->
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+    }
+    .dashboard-card {
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      background-color: white;
+    }
+  </style>
+</head>
+<body class="d-flex justify-content-center align-items-center vh-100">
+
+  <div class="container">
+    <div class="dashboard-card p-5 text-center mx-auto" style="max-width: 500px;">
+      <h1 class="mb-3">Welcome, <span class="text-primary">{{ username }}</span>!</h1>
+      <p class="lead">Welcome to your personalized dashboard. Explore your data, manage your account, or log out below.</p>
+      <a href="{{ url_for('logout') }}" class="btn btn-outline-danger mt-4">Logout</a>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> -->
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: url('{{ url_for('static', filename='first.jpg') }}') no-repeat center center fixed;
+      background-size: cover;
+    }
+    .dashboard-card {
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      background-color: rgba(255, 255, 255, 0.9); /* translucent card */
+    }
+  </style>
+</head>
+<body class="d-flex justify-content-center align-items-center vh-100">
+
+  <div class="container">
+    <div class="dashboard-card p-5 text-center mx-auto" style="max-width: 500px;">
+      <h1 class="mb-3">Welcome, <span class="text-primary">{{ username }}</span>!</h1>
+      <p class="lead">Welcome to your personalized dashboard. Explore your data, manage your account, or log out below.</p>
+      <a href="{{ url_for('logout') }}" class="btn btn-outline-danger mt-4">Logout</a>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+<!-- dashboard.html -->
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    .bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* or use 'contain' if you want the whole video visible */
+      z-index: -1;
+    }
+
+    .dashboard-card {
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      background-color: rgba(255, 255, 255, 0.85);
+    }
+  </style>
+</head>
+<body class="d-flex justify-content-center align-items-center vh-100">
+
+  <video autoplay muted loop class="bg-video">
+    <source src="{{ url_for('static', filename='video1.mp4') }}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="container">
+    <div class="dashboard-card p-5 text-center mx-auto" style="max-width: 500px;">
+      <h1 class="mb-3">Welcome, <span class="text-primary">{{ username }}</span>!</h1>
+      <p class="lead">Stay strong, train smart. Welcome to your fitness dashboard!</p>
+      <a href="{{ url_for('logout') }}" class="btn btn-outline-danger mt-4">Logout</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+<!-- dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FormAI | Dashboard</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    .bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .dashboard-card {
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      background-color: rgba(255, 255, 255, 0.85);
+    }
+
+    .navbar-custom {
+      background: rgba(0, 0, 0, 0.7);
+      width: 100%;
+      padding: 0 2rem;
+    }
+
+    .navbar {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar-brand img {
+      height: 35px;
+      width: auto;
+      margin-right: 10px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .navbar-brand img:hover {
+      transform: scale(1.1);
+      filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+    }
+
+    .nav-link {
+      font-weight: bold;
+    }
+    .navbar-brand {
+      margin-left: 16px;
+    }
+    .navbar .fa-shopping-cart {
+      margin-right: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background video -->
+  <video autoplay muted loop class="bg-video">
+    <source src="{{ url_for('static', filename='video1.mp4') }}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="FormAI Logo">
+      <strong>FormAI</strong>
+    </a>
+
+    <div class="collapse navbar-collapse justify-content-center">
+      <ul class="navbar-nav">
+        <li class="nav-item px-3">
+          <a class="nav-link text-white" href="#">FITNESS</a>
+        </li>
+        <li class="nav-item px-3">
+          <a class="nav-link text-white" href="#">STORE</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="d-flex align-items-center">
+      <span class="text-white me-2" id="user-location">Locating...</span>
+      <i class="fas fa-map-marker-alt text-white me-3"></i>
+      <button class="btn btn-outline-light btn-sm me-3">GET APP</button>
+      <a href="#" class="text-white me-3"><i class="fas fa-user"></i></a>
+      <a href="#" class="text-white"><i class="fas fa-shopping-cart"></i></a>
+    </div>
+  </nav>
+
+  <!-- Dashboard card -->
+  <div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="dashboard-card p-5 text-center" style="max-width: 500px;">
+      <h1 class="mb-3">Welcome, <span class="text-primary">{{ username }}</span>!</h1>
+      <p class="lead">Stay strong, train smart. Welcome to your FormAI dashboard!</p>
+      <a href="{{ url_for('logout') }}" class="btn btn-outline-danger mt-4">Logout</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+          .then(response => response.json())
+          .then(data => {
+            let city = data.address.city || data.address.town || data.address.village || data.address.state || "Your Location";
+            document.getElementById('user-location').textContent = city;
+          })
+          .catch(() => {
+            document.getElementById('user-location').textContent = "Location Unavailable";
+          });
+      },
+      function() {
+        document.getElementById('user-location').textContent = "Location Blocked";
+      }
+    );
+  } else {
+    document.getElementById('user-location').textContent = "Not Supported";
+  }
+});
+</script>
+</body>
+</html>

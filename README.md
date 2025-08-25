@@ -1,4 +1,4 @@
-# FormAI - Fitness Pose Detection App
+# VisionFit - Fitness Pose Detection App
 
 A comprehensive fitness application with MediaPipe pose detection for real-time exercise form analysis.
 
